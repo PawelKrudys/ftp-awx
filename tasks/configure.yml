@@ -1,0 +1,32 @@
+---
+
+- name: Ensure config directories exists
+  file:
+    path: '/etc/proftpd/'
+    state: directory
+
+- name: Set global config
+  notify: restart proftpd
+  template:
+    src: 'proftpd.conf'
+    dest: '/etc/proftpd/proftpd.conf'
+
+- name: Add /bin/false to shell
+  lineinfile:
+    dest: '/etc/shells'
+    regexp: '^/bin/false'
+    line: '/bin/false'
+
+- name: Ensure home directory exist
+  file:
+    path: '/var/data/ftp'
+    state: directory
+
+- name: write users to file
+  notify: restart proftpd
+  template:
+    src: 'proftpd.passwd'
+    dest: '/etc/proftpd/ftpd.passwd'
+    owner: '{{ proftpd_user }}'
+    group: root
+    mode: '0400'

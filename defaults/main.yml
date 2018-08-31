@@ -1,0 +1,5 @@
+---
+
+proftpd_server_name: 'Debian'
+proftpd_user: 'proftpd'
+proftpd_group: 'nogroup'

@@ -1,0 +1,11 @@
+---
+
+- include: install.yml
+
+- include: configure.yml
+
+- name: start proftpd
+  service:
+    name: 'proftpd'
+    state: started
+    enabled: yes

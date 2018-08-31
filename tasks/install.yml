@@ -1,0 +1,31 @@
+---
+
+- name: Ensure proftpd_group exists
+  register: _proftpd_group
+  group:
+    name: '{{ proftpd_group }}'
+    system: no
+    state: present
+
+- name: Ensure proftpd_user exists
+  register: _proftpd_user
+  user:
+    name: '{{ proftpd_user }}'
+    system: no
+    group: '{{ proftpd_group }}'
+    home: /dev/null
+    shell: /etc
+    state: present
+
+- name: Install proftpd from apt-get
+  apt:
+    name: proftpd
+    state: present
+
+- name: Ensure log folder exists and is writable
+  file:
+    path: '/var/log/proftpd'
+    state: directory
+    owner: '{{ proftpd_user }}'
+    group: '{{ proftpd_group }}'
+    mode: '0755'
